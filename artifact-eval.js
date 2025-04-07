@@ -1,7 +1,7 @@
-import { For } from "https://esm.sh/solid-js@1.8.1";
-import { createStore } from "https://esm.sh/solid-js@1.8.1/store";
-import { render } from "https://esm.sh/solid-js@1.8.1/web";
-import html from "https://esm.sh/solid-js@1.8.1/html";
+import { For } from "https://esm.sh/solid-js@1.9.5";
+import { createStore } from "https://esm.sh/solid-js@1.9.5/store";
+import { render } from "https://esm.sh/solid-js@1.9.5/web";
+import html from "https://esm.sh/solid-js@1.9.5/html";
 import { stats, breakdownRolls, rollValue } from "./roll-generator.js";
 
 const initialState = stats.map((title) => ({
@@ -11,10 +11,13 @@ const initialState = stats.map((title) => ({
 }));
 
 const App = () => {
-  const [stats, setStats] = createStore(initialState);
+  const [store, setStore] = createStore({
+    stats: initialState,
+  });
 
   const updateStat = (title, partial) => {
-    setStats(
+    setStore(
+      "stats",
       (oldStat) => oldStat.title === title,
       (oldStat) => ({ ...oldStat, ...partial })
     );
@@ -44,7 +47,7 @@ const App = () => {
         </tr>
       </thead>
       <tbody>
-        <${For} each=${stats}
+        <${For} each=${() => store.stats}
           >${(stat) => html`<tr class="border-b border-gray-150">
             <td class="py-2 px-2">
               <input

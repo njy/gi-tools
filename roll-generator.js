@@ -72,7 +72,8 @@ export function breakdownRolls(stat, value) {
     return "invalid";
   }
   const components = rolls[match][0];
-  return `${components.join(" + ")}`;
+  const inrement = increments[stat];
+  return `${components.map((comp) => `${comp} (${inrement.indexOf(comp) + 1})`).join(" + ")}`;
 }
 
 export function rollValue(stat, value) {
@@ -84,7 +85,9 @@ export function rollValue(stat, value) {
   if (!match) {
     return;
   }
-  const maxPossible = Object.keys(rolls).reduce((max, current) => Math.max(max, Number(current)), 0);
+  const rollsCount = rolls[match][0].length;
+  const maxRoll = increments[stat].slice(-1)[0];
+  const maxPossible = maxRoll * rollsCount;
 
-  return `${value} / ${maxPossible} (${((value * 600) / maxPossible).toFixed(0)}%)`;
+  return `${value} / ${maxPossible} (${((value * 100) / maxPossible).toFixed(0)}%)`;
 }

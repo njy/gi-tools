@@ -1,17 +1,4 @@
-export const stats = [
-  "CRIT Rate%",
-  "CRIT DMG%",
-  "Energy Recharge%",
-  "Elemental Mastery",
-  "HP",
-  "HP%",
-  "ATK",
-  "ATK%",
-  "DEF",
-  "DEF%",
-];
-
-const increments = {
+const stats = {
   "CRIT Rate%": [2.72, 3.11, 3.5, 3.89],
   "CRIT DMG%": [5.44, 6.22, 6.99, 7.77],
   "Energy Recharge%": [4.53, 5.18, 5.83, 6.48],
@@ -23,6 +10,8 @@ const increments = {
   DEF: [16.2, 18.52, 20.83, 23.15],
   "DEF%": [5.1, 5.83, 6.56, 7.29],
 };
+
+export const statNames = Object.keys(stats);
 
 function addNew(rolls, sum, current) {
   if (!rolls[sum]) {
@@ -46,7 +35,7 @@ function addRolls(rolls, total, stat, limit) {
   if (limit === 0) {
     return;
   }
-  const increment = increments[stat];
+  const increment = stats[stat];
   for (let roll = 0; roll < increment.length; roll++) {
     const currentTotal = total.concat(increment[roll]).sort((a, b) => b - a);
     // use 100x multiplier to fix floating math
@@ -72,7 +61,7 @@ export function breakdownRolls(stat, value) {
     return "invalid";
   }
   const components = rolls[match][0];
-  const inrement = increments[stat];
+  const inrement = stats[stat];
   return `${components.map((comp) => `${comp} (${inrement.indexOf(comp) + 1})`).join(" + ")}`;
 }
 
@@ -86,7 +75,7 @@ export function rollValue(stat, value) {
     return;
   }
   const rollsCount = rolls[match][0].length;
-  const maxRoll = increments[stat].slice(-1)[0];
+  const maxRoll = stats[stat].slice(-1)[0];
   const maxPossible = maxRoll * rollsCount;
 
   return `${value} / ${maxPossible} (${((value * 100) / maxPossible).toFixed(0)}%)`;

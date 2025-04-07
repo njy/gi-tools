@@ -2,9 +2,9 @@ import { For } from "https://esm.sh/solid-js@1.9.5";
 import { createStore } from "https://esm.sh/solid-js@1.9.5/store";
 import { render } from "https://esm.sh/solid-js@1.9.5/web";
 import html from "https://esm.sh/solid-js@1.9.5/html";
-import { stats, breakdownRolls, rollValue } from "./roll-generator.js";
+import { statNames, breakdownRolls, rollValue } from "./roll-generator.js";
 
-const initialState = stats.map((title) => ({
+const initialState = statNames.map((title) => ({
   title,
   enabled: false,
   value: "",
